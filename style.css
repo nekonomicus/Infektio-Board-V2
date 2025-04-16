@@ -1,0 +1,223 @@
+/* General Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.6; margin: 0; padding: 20px; background-color: #f4f7f6; color: #333;
+}
+.container { max-width: 1600px; /* Slightly wider for potentially larger timeline */ margin: 0 auto; background-color: #fff; padding: 30px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+h1, h2, h3, h4 { color: #2c3e50; }
+h1 { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+h2 { margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+h3 { color: #3498db; margin-top: 30px; margin-bottom: 15px; }
+h4 { color: #2980b9; margin-top: 0; margin-bottom: 10px; }
+section.card { background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px; padding: 20px; margin-bottom: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+/* Form Styles */
+.patient-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px 20px; align-items: start; }
+.patient-info-grid .diagnose-field { grid-column: 1 / -1; }
+label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 0.9em; }
+input[type="text"], input[type="date"], select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95em; font-family: inherit; }
+textarea { resize: vertical; min-height: 60px; }
+input:focus, select:focus, textarea:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); }
+.checkbox-group { display: flex; flex-direction: column; gap: 5px; align-self: start; padding-top: 25px; }
+.checkbox-group > label { margin-bottom: 8px; }
+.checkbox-group div { display: flex; align-items: center; }
+.checkbox-group input[type="checkbox"] { width: auto; margin-right: 8px; }
+.checkbox-group label { margin-bottom: 0; font-weight: normal; font-size: 0.95em; }
+
+/* Event Form Layout */
+#eventForm { display: flex; flex-direction: column; gap: 15px; }
+.event-input-row { display: flex; flex-wrap: wrap; gap: 20px; }
+.event-input-group { flex: 1 1 250px; /* Allow shrinking/growing */ min-width: 200px; }
+.event-input-group.full-width { flex-basis: 100%; }
+.conditional-fields { background-color: #f8f9fa; border: 1px dashed #e0e0e0; padding: 15px; border-radius: 4px; margin-top: -5px; /* Pull up slightly */ }
+
+/* Buttons */
+button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95em; transition: background-color 0.2s ease, opacity 0.2s ease; margin-top: 10px; }
+.button-primary { background-color: #3498db; color: white; }
+.button-primary:hover { background-color: #2980b9; }
+.button-secondary { background-color: #95a5a6; color: white; }
+.button-secondary:hover { background-color: #7f8c8d; }
+.button-copy { background-color: #1abc9c; color: white; margin-right: 5px; }
+.button-copy:hover { background-color: #16a085; }
+.button-copy:disabled { opacity: 0.5; cursor: not-allowed; background-color: #95a5a6;}
+.button-danger { background-color: #e74c3c; color: white; font-size: 0.85em; padding: 8px 15px; }
+.button-danger:hover { background-color: #c0392b; }
+
+/* Event List */
+#eventList { list-style-type: none; padding: 0; max-height: 300px; overflow-y: auto; border: 1px solid #eee; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; }
+#eventList li { padding: 10px 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em; }
+#eventList li:last-child { border-bottom: none; }
+#eventList li span { flex-grow: 1; margin-right: 10px; word-break: break-word; }
+#eventList .delete-button { background-color: #e74c3c; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 0.8em; cursor: pointer; margin-left: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; transition: background-color 0.2s ease; }
+#eventList .delete-button:hover { background-color: #c0392b; }
+
+/* Timeline Section */
+#timelineSection { margin-top: 30px; position: relative; }
+#timelineSvgWrapper {
+    border: 1px solid #ccc;
+    overflow-x: auto; /* Keep horizontal scroll if content exceeds width */
+    overflow-y: hidden;
+    background-color: #fdfdfd;
+    margin-bottom: 10px;
+    min-height: 150px; /* Increased min-height */
+    width: 100%; /* Ensure it takes full width */
+    box-sizing: border-box;
+ }
+#timelineSvg {
+    display: block;
+    min-width: 1200px; /* Increase min-width to provide more space */
+    /* Height is set dynamically by JS */
+}
+#timelineStatus { color: #7f8c8d; font-style: italic; }
+
+/* --- SVG Elements Styling (IMPROVED FONT SIZES) --- */
+.axis-line { stroke: #555; stroke-width: 1.5; }
+.axis-tick line { stroke: #ccc; stroke-width: 1; }
+.axis-tick text {
+    fill: #444; /* Slightly darker */
+    font-size: 13px; /* Increased font size */
+    text-anchor: middle;
+}
+.axis-label {
+    fill: #333;
+    font-size: 14px; /* Increased font size */
+    font-weight: bold;
+    text-anchor: end;
+}
+.grid-line { stroke: #eee; stroke-width: 1; }
+
+/* Markers */
+.marker-base { pointer-events: none; }
+.op-marker {
+    fill: #e74c3c;
+    stroke: #c0392b;
+    stroke-width: 1; /* Slightly thicker stroke */
+ }
+
+/* Static Text Labels on Timeline */
+.timeline-text-label {
+    font-size: 12px; /* Increased font size */
+    fill: #333;
+    text-anchor: start; /* Default align left */
+    dominant-baseline: middle; /* Center vertically */
+    pointer-events: none;
+}
+.timeline-text-label.op-label { fill: #c0392b; font-weight: 500; } /* Optional: Make OP label slightly bolder */
+.timeline-text-label.labor-label { fill: #111; } /* Darker label */
+.timeline-text-label.probe-label { fill: #8e44ad; font-weight: 500; } /* Purple for probe info, slightly bolder */
+
+
+/* Antibiotic Bar */
+.antibiotic-bar { fill: #2ecc71; opacity: 0.7; stroke: #27ae60; stroke-width: 1; pointer-events: none; }
+.bar-text-label {
+    font-size: 12px; /* Increased font size */
+    fill: #222; /* Darker label */
+    text-anchor: start;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+/* Summaries Section Layout */
+#summariesContainer { margin-top: 20px; }
+#summariesSection { display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start; }
+.summary-box { border: 1px solid #eee; padding: 15px; border-radius: 4px; background-color: #fdfdfd; display: flex; flex-direction: column; flex: 1 1 300px; min-width: 280px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.summary-list-container { max-height: 250px; overflow-y: auto; margin-bottom: 10px; flex-grow: 1; border: 1px solid #eee; padding: 5px; border-radius: 3px; background-color: #fff;}
+#summariesSection ul { list-style-type: none; padding-left: 0; margin-top: 0; margin-bottom: 0; }
+#summariesSection li { background-color: #ecf0f1; margin-bottom: 8px; padding: 8px 12px; border-radius: 3px; font-size: 0.9em; border-left: 4px solid #bdc3c7; line-height: 1.4; }
+#opSummary li { border-left-color: #e74c3c; }
+#probeSummary li { border-left-color: #8e44ad; } /* Purple for probes */
+#antibioticSummary li { border-left-color: #2ecc71; }
+#summariesSection li .date { font-weight: bold; margin-right: 8px; color: #555; display: inline-block; min-width: 75px; }
+.summary-box button { margin-top: auto; align-self: flex-start; }
+
+/* Divider */
+hr.section-divider { border: none; border-top: 1px solid #eee; margin: 30px 0; }
+
+/* Clipboard HTML Table Styles */
+.clipboard-table { border-collapse: collapse; width: 100%; font-family: sans-serif; font-size: 10pt; margin-bottom: 1em; }
+.clipboard-table caption { font-weight: bold; font-size: 11pt; text-align: left; padding-bottom: 5px; caption-side: top; }
+.clipboard-table th, .clipboard-table td { border: 1px solid #ddd; padding: 6px; text-align: left; vertical-align: top; }
+.clipboard-table th { background-color: #f2f2f2; font-weight: bold; }
+.clipboard-table tbody tr:nth-child(even) { background-color: #f9f9f9; }
+
+/* --- Print Styles (IMPROVED) --- */
+@media print {
+    body {
+        padding: 0;
+        background-color: #fff !important;
+        color: #000 !important;
+        font-size: 10pt; /* Slightly larger base print font */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .container {
+        box-shadow: none;
+        border: none;
+        padding: 5mm;
+        max-width: 100% !important; /* Ensure it uses full width */
+        margin: 0;
+        width: 100% !important;
+    }
+    section.card {
+        box-shadow: none;
+        border: none;
+        page-break-inside: avoid;
+        padding: 0;
+        margin-bottom: 5mm;
+        border-bottom: 1px solid #eee; /* Add a light separator between printed sections */
+    }
+    h1, h2, h3, h4 { color: #000 !important; }
+    hr.section-divider { display: none !important;}
+    button, #eventForm, #eventList, #clearAllButton { display: none !important; } /* Hide all buttons and forms */
+    .button-copy { display: none !important; } /* Ensure copy buttons are hidden */
+
+    /* Default Print: Show Patient Info, Timeline, Summaries */
+    body:not(.printing-timeline-only) #outputSection > *:not(#timelineSection):not(#summariesContainer):not(h2) {
+       /* Allow h2 to show */
+       /* display: none !important; */ /* This was hiding summaries, adjust */
+    }
+    body:not(.printing-timeline-only) #timelineSection p, body:not(.printing-timeline-only) #timelineSection h3 { display: none !important; } /* Hide Timeline title/desc */
+    body:not(.printing-timeline-only) #summariesSection .button-copy {display: none !important;}
+    body:not(.printing-timeline-only) #summariesSection { flex-wrap: nowrap; }
+    body:not(.printing-timeline-only) .summary-box { page-break-inside: avoid; }
+    body:not(.printing-timeline-only) .summary-list-container { max-height: none !important; overflow: visible !important; border: none !important; } /* Show all summary items */
+
+    /* Styles ONLY when printing timeline */
+     body.printing-timeline-only > .container > section:not(#outputSection) { display: none !important; }
+     body.printing-timeline-only #outputSection > *:not(#timelineSection){ display: none !important; }
+     body.printing-timeline-only #outputSection { padding: 0; margin: 0; border: none; width: 100% !important; }
+     body.printing-timeline-only #timelineSection {
+         display: block !important;
+         width: 100% !important;
+         border: none !important;
+         padding: 0 !important;
+         margin: 0 !important;
+         page-break-inside: avoid !important;
+         page-break-before: auto !important;
+         page-break-after: auto !important;
+     }
+     body.printing-timeline-only #timelineSection h3, body.printing-timeline-only #timelineSection p { display: none !important; }
+     body.printing-timeline-only #timelineSvgWrapper {
+         border: none !important;
+         overflow: visible !important; /* Show full SVG */
+         background-color: #fff !important;
+         width: 100% !important;
+     }
+     body.printing-timeline-only #timelineSvg {
+         min-width: unset !important; /* Allow SVG to scale down if needed */
+         width: 100% !important; /* Make SVG use the container width */
+         height: auto !important; /* Maintain aspect ratio */
+         border: 1px solid #aaa; /* Add border for clarity */
+     }
+
+     /* General Print SVG styles - Larger Fonts */
+     #timelineSvg { border: 1px solid #aaa; background-color: #fff !important;}
+     .axis-line, .axis-tick line { stroke: #000 !important; }
+     .grid-line { stroke: #ccc !important; stroke-dasharray: none !important;}
+     .axis-tick text { font-size: 10pt !important; fill: #000 !important;}
+     .axis-label { font-size: 11pt !important; fill: #000 !important; }
+     .timeline-text-label { font-size: 10pt !important; fill: #000 !important;}
+     .bar-text-label { font-size: 10pt !important; fill: #000 !important;}
+     .op-marker { fill: #e74c3c !important; stroke: #000 !important; stroke-width: 1pt !important; }
+     .antibiotic-bar { fill: #2ecc71 !important; stroke: #000 !important; opacity: 0.6 !important; stroke-width: 1pt !important;}
+}

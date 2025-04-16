@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patienten-Timeline Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Patienten-Timeline Generator</h1>
+
+        <section class="card" id="patientInfoSection">
+             <h2>Patienteninformationen</h2>
+            <div class="form-grid patient-info-grid">
+                <div>
+                    <label for="patientName">Name, Vorname:</label>
+                    <input type="text" id="patientName" name="patientName">
+                </div>
+                <div>
+                    <label for="patientDob">Geburtsdatum:</label>
+                    <input type="date" id="patientDob" name="patientDob">
+                </div>
+                 <div>
+                    <label for="orthoTeam">Orthopädie Team:</label>
+                    <select id="orthoTeam" name="orthoTeam">
+                        <option value="">-- Team wählen --</option>
+                        <option value="Fuss">Fuss</option>
+                        <option value="Hüfte">Hüfte</option>
+                        <option value="Knie">Knie</option>
+                        <option value="OE">Obere Extremität (OE)</option>
+                        <option value="Tumor">Tumor</option>
+                        <option value="WS">Wirbelsäule (WS)</option>
+                        <option value="Andere">Andere</option>
+                    </select>
+                </div>
+                 <div class="full-width diagnose-field">
+                    <label for="patientDiagnosis">Diagnose:</label>
+                    <textarea id="patientDiagnosis" name="patientDiagnosis" rows="3"></textarea>
+                </div>
+                 <div>
+                    <label for="patientTeam">Zuständiges ext. Team/Arzt:</label>
+                    <input type="text" id="patientTeam" name="patientTeam" placeholder="z.B. Hausarzt, Spital X">
+                 </div>
+                 <div class="checkbox-group">
+                     <label>Konsilien:</label>
+                     <div>
+                         <input type="checkbox" id="infektioInvolviert" name="infektioInvolviert">
+                         <label for="infektioInvolviert">Infektiologie involviert</label>
+                     </div>
+                     <div>
+                         <input type="checkbox" id="plwcInvolviert" name="plwcInvolviert">
+                         <label for="plwcInvolviert">PLWC involviert</label>
+                     </div>
+                 </div>
+            </div>
+             <button id="copyPatientDataButton" class="button-copy">Patientendaten kopieren</button>
+        </section>
+
+        <section class="card">
+            <h2>Ereignis hinzufügen</h2>
+            <form id="eventForm"> <div class="event-input-row">
+                    <div class="event-input-group">
+                        <label for="eventDate">Datum:</label>
+                        <input type="date" id="eventDate" name="eventDate" required>
+                    </div>
+                    <div class="event-input-group event-type-group">
+                        <label for="eventType">Ereignistyp:</label>
+                        <select id="eventType" name="eventType" required>
+                            <option value="">-- Typ wählen --</option>
+                            <option value="OP">Operation (OP)</option>
+                            <option value="Antibiotika Start">Antibiotika Start</option>
+                            <option value="Antibiotika Ende">Antibiotika Ende</option>
+                            <option value="Probenentnahme">Probenentnahme</option>
+                            <option value="Labor CRP">Labor: CRP (mg/l)</option>
+                            <option value="Labor Lc">Labor: Lc (G/l)</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div id="probeFields" class="event-input-row conditional-fields" style="display: none;">
+                    <div class="event-input-group">
+                        <label for="probeArt">Probenart:</label>
+                        <select id="probeArt" name="probeArt">
+                            <option value="">-- Art wählen --</option>
+                            <option value="Biopsie">Biopsie</option>
+                            <option value="Punktion">Punktion</option>
+                            <option value="Abstrich">Abstrich</option>
+                            <option value="Intra-OP">Intra-OP</option>
+                            <option value="Blutkultur">Blutkultur</option>
+                            <option value="Andere">Andere (siehe Details)</option>
+                        </select>
+                    </div>
+                    <div class="event-input-group">
+                        <label for="probeKeim">Nachgew. Keim (oder 'Negativ'):</label>
+                        <input type="text" id="probeKeim" name="probeKeim" placeholder="z.B. E. coli, Negativ">
+                    </div>
+                </div>
+
+                <div class="event-input-row">
+                    <div class="event-input-group full-width">
+                        <label for="eventDetails" id="eventDetailsLabel">Details / Wert:</label>
+                        <input type="text" id="eventDetails" name="eventDetails" placeholder="Details zur OP, AB Dosis, Laborwert, Probe Details...">
+                    </div>
+                </div>
+
+                <div class="event-input-row">
+                    <button type="submit" class="button-primary">Ereignis hinzufügen</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Eingegebene Ereignisse</h2>
+            <ul id="eventList">
+                <li>Noch keine Ereignisse hinzugefügt.</li>
+            </ul>
+             <button id="clearAllButton" class="button-danger">Alle Ereignisse & Patientendaten löschen</button>
+        </section>
+
+        <section class="card" id="outputSection">
+            <h2>Generierte Timeline & Übersichten</h2>
+
+            <div id="timelineSection">
+                <h3>Timeline</h3>
+                <p><i>Die Timeline ist für die Anzeige und das Kopieren als Bild optimiert.</i></p>
+                 <p id="timelineStatus">Ereignisse eingeben, um die Timeline zu generieren.</p>
+                <div id="timelineSvgWrapper">
+                    <svg id="timelineSvg"></svg>
+                </div>
+                 <button id="printTimelineButton" class="button-secondary">Timeline drucken</button>
+            </div>
+
+            <hr class="section-divider">
+
+             <div id="summariesContainer">
+                 <h3>Übersichten</h3>
+                <div id="summariesSection">
+                    <div id="opSummary" class="summary-box">
+                        <h4>Übersicht OPs</h4>
+                        <div id="opListContainer" class="summary-list-container">
+                            <ul id="opList"><li>Keine OPs eingegeben.</li></ul>
+                        </div>
+                        <button id="copyOpsButton" class="button-copy">OPs kopieren</button>
+                    </div>
+                    <div id="probeSummary" class="summary-box">
+                        <h4>Übersicht Probenentnahmen</h4>
+                         <div id="probeListContainer" class="summary-list-container">
+                            <ul id="probeList"><li>Keine Proben eingegeben.</li></ul>
+                         </div>
+                        <button id="copyProbesButton" class="button-copy">Proben kopieren</button>
+                    </div>
+                    <div id="antibioticSummary" class="summary-box">
+                        <h4>Übersicht Antibiotika</h4>
+                        <div id="antibioticListContainer" class="summary-list-container">
+                            <ul id="antibioticList"><li>Keine Antibiotika eingegeben.</li></ul>
+                        </div>
+                        <button id="copyAntibioticsButton" class="button-copy">Antibiotika kopieren</button>
+                    </div>
+                </div>
+             </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
